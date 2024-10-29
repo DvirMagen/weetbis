@@ -74,7 +74,7 @@ public class RestaurantMap {
         restaurantWithDishesDto.setIsKosher(restaurantDto.getIsKosher());
         restaurantWithDishesDto.setAverageRating(restaurantDto.getAverageRating());
         restaurantWithDishesDto.setTags(restaurantDto.getTags());
-        restaurantWithDishesDto.setDishes(DishMap.toDishBodyDtoList(dishes));
+        restaurantWithDishesDto.setDishes(DishMap.mapDishDtoListToDishBodyDtoList(dishes));
         return restaurantWithDishesDto;
     }
 

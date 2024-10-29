@@ -3,7 +3,9 @@ package com.dvr.mgn.weetbis.controllers;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.dvr.mgn.weetbis.dto.DishBodyDto;
 import com.dvr.mgn.weetbis.dto.DishDto;
+import com.dvr.mgn.weetbis.mappers.DishMap;
 import com.dvr.mgn.weetbis.service.interfaces.DishInterface;
 
 import lombok.AllArgsConstructor;
@@ -19,9 +21,6 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 
-
-
-
 @AllArgsConstructor
 @RestController
 @RequestMapping("/restaurants/{restaurantId}/dishes")
@@ -34,8 +33,7 @@ public class DishController {
             dishDto.setRestaurantId(restaurantId);
             DishDto newDish = dishInterface.createDish(dishDto);
             return ResponseEntity.status(HttpStatus.CREATED).body(newDish);
-        }
-        catch (RuntimeException e) {
+        } catch (RuntimeException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }
     }
@@ -44,21 +42,19 @@ public class DishController {
     public ResponseEntity<?> getAllDishesByRestaurantId(@PathVariable("restaurantId") int restaurantId) {
         try {
             List<DishDto> dishes = dishInterface.getAllDishesByRestaurantId(restaurantId);
-            return ResponseEntity.status(HttpStatus.OK).body(dishes);
-        }
-        catch (RuntimeException e) {
+            List<DishBodyDto> dishesBodyList = DishMap.mapDishDtoListToDishBodyDtoList(dishes);
+            return ResponseEntity.status(HttpStatus.OK).body(dishesBodyList);
+        } catch (RuntimeException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }
-
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<?> getDishById(@PathVariable("restaurantId") int restaurantId, @PathVariable("id") int id) {
         try {
-            DishDto dish = dishInterface.getDishById(restaurantId, id);
+            DishBodyDto dish = dishInterface.getDishById(restaurantId, id);
             return ResponseEntity.status(HttpStatus.OK).body(dish);
-        }
-        catch (RuntimeException e) {
+        } catch (RuntimeException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }
     }
@@ -71,20 +67,17 @@ public class DishController {
             dishDto.setRestaurantId(restaurantId);
             DishDto updatedDish = dishInterface.updateDish(dishDto);
             return ResponseEntity.status(HttpStatus.OK).body(updatedDish);
-        }
-        catch (RuntimeException e) {
+        } catch (RuntimeException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }
-
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteMethodName(@PathVariable("restaurantId") int restaurantId, @PathVariable int id) {
+    public ResponseEntity<?> deleteDish(@PathVariable("restaurantId") int restaurantId, @PathVariable int id) {
         try {
             dishInterface.deleteDish(restaurantId, id);
             return ResponseEntity.status(HttpStatus.OK).body("Dish deleted successfully");
-        }
-        catch (RuntimeException e) {
+        } catch (RuntimeException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }
     }

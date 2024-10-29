@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import com.dvr.mgn.weetbis.dto.RestaurantDto;
 import com.dvr.mgn.weetbis.entities.Restaurant;
+import com.dvr.mgn.weetbis.exceptions.ResourceNotFoundException;
 import com.dvr.mgn.weetbis.mappers.RestaurantMap;
 import com.dvr.mgn.weetbis.repository.RestaurantRepo;
 
@@ -36,7 +37,8 @@ public class RestaurantImp implements RestaurantInterface {
 
     @Override
     public RestaurantDto getRestaurantById(int id) {
-        Restaurant restaurant = restaurantRepository.findById(id).orElseThrow(() -> new RuntimeException("Restaurant not found"));
+        Restaurant restaurant = restaurantRepository.findById(id).orElseThrow(
+            () -> new ResourceNotFoundException("Restaurant not found"));
         return RestaurantMap.mapRestaurantDto(restaurant);
     }
 
@@ -53,16 +55,17 @@ public class RestaurantImp implements RestaurantInterface {
     @Override
     public RestaurantDto updateRestaurant(RestaurantDto updatedRestaurantDto) {
         Restaurant restaurant = restaurantRepository.findById(updatedRestaurantDto.getId()).orElseThrow(
-            () -> new RuntimeException("Restaurant " + updatedRestaurantDto.getId() + " not found"));
+            () -> new ResourceNotFoundException("Restaurant " + updatedRestaurantDto.getId() + " not found"));
 
         RestaurantMap.updateRestaurant(restaurant, updatedRestaurantDto);
-        return RestaurantMap.mapRestaurantDto(restaurant);
+        Restaurant updatedRestaurant = restaurantRepository.save(restaurant);
+        return RestaurantMap.mapRestaurantDto(updatedRestaurant);
     }
 
     @Override
     public void deleteRestaurant(int id) {
         restaurantRepository.findById(id).orElseThrow(
-            () -> new RuntimeException("Restaurant " + id + " not found"));
+            () -> new ResourceNotFoundException("Restaurant " + id + " not found"));
         restaurantRepository.deleteById(id);
     }
 

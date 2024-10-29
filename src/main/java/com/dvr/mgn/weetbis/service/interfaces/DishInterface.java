@@ -2,6 +2,7 @@ package com.dvr.mgn.weetbis.service.interfaces;
 
 import java.util.List;
 
+import com.dvr.mgn.weetbis.dto.DishBodyDto;
 import com.dvr.mgn.weetbis.dto.DishDto;
 
 public interface DishInterface {
@@ -14,5 +15,5 @@ public interface DishInterface {
 
     List<DishDto> getAllDishesByRestaurantId(int restaurantId);
 
-    DishDto getDishById(int restaurantId, int id);
+    DishBodyDto getDishById(int restaurantId, int id);
 }
