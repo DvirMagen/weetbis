@@ -13,9 +13,9 @@ import lombok.Setter;
 @Entity
 @Table(name = "dishes")
 public class Dish {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", nullable = false, updatable = false)
     private int id;
 
     @Column(name = "name")
@@ -29,4 +29,5 @@ public class Dish {
 
     @Column(name = "restaurant_id")
     private int restaurantId;
+    
 }

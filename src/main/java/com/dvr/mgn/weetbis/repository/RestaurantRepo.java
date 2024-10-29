@@ -11,6 +11,6 @@ public interface RestaurantRepo extends JpaRepository<Restaurant, Integer> {
     boolean existsById(int id);
 
     // get all restaurants by tag from restaurant.tags
-    @Query("SELECT r FROM Restaurant r WHERE :tag IN r.tags")
+    @Query("SELECT r FROM Restaurant r WHERE :tag IN elements(r.tags)")
     List<Restaurant> findByTag(String tag);
 }

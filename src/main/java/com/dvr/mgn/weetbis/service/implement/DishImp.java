@@ -34,15 +34,15 @@ public class DishImp implements DishInterface {
     }
 
     @Override
-    public DishBodyDto getDishById(int restaurantId, int dishId) {
-        Dish dish = dishRepository.findByIdAndRestaurantId(dishId, restaurantId).orElseThrow(
+    public DishBodyDto getDishById(int restaurant_id, int dishId) {
+        Dish dish = dishRepository.findByIdAndRestaurantId(restaurant_id, dishId).orElseThrow(
             () -> new ResourceNotFoundException("Dish id " + dishId + " not found"));
         return DishMap.mapDishToDishBodyDto(dish);
     }
 
     @Override
     public DishDto updateDish(DishDto dishDto) {
-        Dish dish = dishRepository.findByIdAndRestaurantId(dishDto.getId(), dishDto.getRestaurantId()).orElseThrow(
+        Dish dish = dishRepository.findByIdAndRestaurantId(dishDto.getRestaurantId(), dishDto.getId()).orElseThrow(
             () -> new ResourceNotFoundException("Dish id " + dishDto.getId() + " not found"));
         DishMap.updateDish(dish, dishDto);
         Dish savedDish = dishRepository.save(dish);
@@ -50,8 +50,8 @@ public class DishImp implements DishInterface {
     }
 
     @Override
-    public void deleteDish(int restaurantId, int dishId) {
-        Dish dish = dishRepository.findByIdAndRestaurantId(dishId, restaurantId).orElseThrow(
+    public void deleteDish(int restaurant_id, int dishId) {
+        Dish dish = dishRepository.findByIdAndRestaurantId(restaurant_id, dishId).orElseThrow(
             () -> new ResourceNotFoundException("Dish id " + dishId + " not found"));
             dishRepository.delete(dish);
     }
