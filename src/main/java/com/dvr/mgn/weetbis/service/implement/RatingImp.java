@@ -1,6 +1,7 @@
 package com.dvr.mgn.weetbis.service.implement;
 
 import org.springframework.stereotype.Service;
+import java.text.DecimalFormat;
 
 import com.dvr.mgn.weetbis.dto.RatingDto;
 import com.dvr.mgn.weetbis.dto.RestaurantDto;
@@ -33,6 +34,9 @@ public class RatingImp implements RatingInterface {
         double totalRating = restaurant.getAverageRating() * totalRaters;
         restaurant.setAverageRating(++totalRaters);
         double newAvgRating = (totalRating + ratingDto.getRating()) / totalRaters;
+
+        DecimalFormat df = new DecimalFormat("0.00");
+        newAvgRating = Double.parseDouble(df.format(newAvgRating));
 
         // Update the restaurant rating
         restaurant.setAverageRating(newAvgRating);
