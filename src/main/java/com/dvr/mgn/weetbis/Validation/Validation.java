@@ -18,13 +18,43 @@ public class Validation {
     //Restaurant Check:
 
     public static void isValidRestaurantDto(RestaurantDto restaurantDto) {
-        isValidString(restaurantDto.getName());
+        isValidRestaurantName(restaurantDto.getName());
+        isValidRestaurantPhone(restaurantDto.getPhone());
+        isValidKosher(restaurantDto.getIsKosher());
         isEmptyTagsList(restaurantDto.getTags());
     }
 
     public static void isValidRestaurantId(boolean exists) {
         if (!exists) {
             throw new InvalidRequestException("The restaurant Id does not exists.");
+        }
+    }
+
+    public static void isValidRestaurantName(String name) {
+        if (name == null || name.isEmpty()) {
+            throw new InvalidRequestException("The restaurant name cannot be empty.");
+        }
+    }
+
+    public static void isValidRestaurantPhone(String phone) {
+        if (phone == null || phone.isEmpty()) {
+            throw new InvalidRequestException("The restaurant phone cannot be empty.");
+        }
+
+        // Check that the phone number contains only digits, spaces, or dashes
+        if (!phone.matches("^[0-9\\-\\s]+$")) {
+            throw new InvalidRequestException("Invalid phone number format. It should contain only digits, spaces, or dashes.");
+        }
+        // Check that the phone number length is reasonable
+        int length = phone.replaceAll("[^0-9]", "").length(); // Remove non-numeric characters to get actual length
+        if (length < 10 || length > 15) {
+            throw new InvalidRequestException("Invalid phone number length. It must be between 10 and 15 digits.");
+        }
+    }
+
+    public static void isValidKosher(Boolean isKosher) {
+        if (isKosher == null) {
+            throw new InvalidRequestException("isKosher value is Empty");
         }
     }
 
@@ -37,8 +67,20 @@ public class Validation {
     //Dish Check:
 
         public static void isValidDish(DishDto dishDto) {
-        isValidString(dishDto.getName());
-        isValidString(dishDto.getDescription());
+        isValidDishName(dishDto.getName());
+        isValidDishDescription(dishDto.getDescription());
+    }
+
+    public static void isValidDishName(String name) {
+        if (name == null || name.isEmpty()) {
+            throw new InvalidRequestException("The dish name cannot be empty.");
+        }
+    }
+
+    public static void isValidDishDescription(String description) {
+        if (description == null || description.isEmpty()) {
+            throw new InvalidRequestException("The dish name cannot be empty.");
+        }
     }
 
     //Rating Check:

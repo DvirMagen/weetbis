@@ -58,7 +58,6 @@ public class RestaurantImp implements RestaurantInterface {
     public RestaurantDto updateRestaurant(RestaurantDto updatedRestaurantDto) {
         Restaurant restaurant = restaurantRepository.findById(updatedRestaurantDto.getId()).orElseThrow(
             () -> new ResourceNotFoundException("Restaurant " + updatedRestaurantDto.getId() + " not found"));
-
         RestaurantMap.updateRestaurant(restaurant, updatedRestaurantDto);
         Restaurant updatedRestaurant = restaurantRepository.save(restaurant);
         return RestaurantMap.mapRestaurantDto(updatedRestaurant);

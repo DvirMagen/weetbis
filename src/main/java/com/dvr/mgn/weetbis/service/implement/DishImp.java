@@ -51,8 +51,6 @@ public class DishImp implements DishInterface {
     public DishDto updateDish(DishDto dishDto) {
         Dish dish = dishRepository.findByIdAndRestaurantId(dishDto.getRestaurantId(), dishDto.getId()).orElseThrow(
             () -> new ResourceNotFoundException("Dish id " + dishDto.getId() + " not found"));
-        String description = dishDto.getDescription();
-        Validation.isValidString(description);
         DishMap.updateDish(dish, dishDto);
         Dish savedDish = dishRepository.save(dish);
         return DishMap.mapDishToDishDto(savedDish);

@@ -25,7 +25,7 @@ public class OrderController {
     private OrderInterface orderInterface;
 
     @PostMapping
-    public ResponseEntity<?> createRating(@RequestBody OrderDto orderDto)  {
+    public ResponseEntity<?> createOrder(@RequestBody OrderDto orderDto)  {
         try {
             // Check if restaurant-ID exists
             int restaurantId = orderDto.getRestaurantId();

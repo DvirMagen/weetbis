@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 import com.dvr.mgn.weetbis.dto.RestaurantBodyDto;
 import com.dvr.mgn.weetbis.dto.RestaurantDto;
 import com.dvr.mgn.weetbis.dto.RestaurantWithDishesDto;
+import com.dvr.mgn.weetbis.Validation.Validation;
 import com.dvr.mgn.weetbis.dto.DishDto;
 import com.dvr.mgn.weetbis.entities.Restaurant;
 
@@ -80,7 +81,10 @@ public class RestaurantMap {
 
     public static void updateRestaurant(Restaurant restaurant, RestaurantDto updatedRestaurantDto) {
         if (updatedRestaurantDto.getName() != null) restaurant.setName(updatedRestaurantDto.getName());
-        if (updatedRestaurantDto.getPhone() != null) restaurant.setPhone(updatedRestaurantDto.getPhone());
+        if (updatedRestaurantDto.getPhone() != null) {
+            Validation.isValidRestaurantPhone(updatedRestaurantDto.getPhone());
+            restaurant.setPhone(updatedRestaurantDto.getPhone());
+        }
         if (updatedRestaurantDto.getIsKosher() != null) restaurant.setIsKosher(updatedRestaurantDto.getIsKosher());
         if (updatedRestaurantDto.getTags() != null) restaurant.setTags(updatedRestaurantDto.getTags());
     }

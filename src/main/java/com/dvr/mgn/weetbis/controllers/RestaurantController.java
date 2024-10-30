@@ -37,7 +37,7 @@ public class RestaurantController {
     @PostMapping
     public ResponseEntity<?> createRestaurant(@RequestBody RestaurantDto restaurantDto) {
         try {
-            Validation.isValidRestaurantDto(restaurantDto);
+            //Validation.isValidRestaurantDto(restaurantDto);
             System.out.println("==========> Restaurant Name: " + restaurantDto.getName());
             System.out.println("==========> Is Kosher Restaurant: " + restaurantDto.getIsKosher());
             System.out.println("==========> Restaurant Phone: " + restaurantDto.getPhone());
