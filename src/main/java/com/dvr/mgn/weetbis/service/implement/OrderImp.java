@@ -27,7 +27,11 @@ public class OrderImp implements OrderInterface {
     public OrderDto createOrder(OrderDto orderDto) {
         Order order = OrderMap.mapOrderDtoToOrder(orderDto);
         List<Dish> dishes = dishRepository.findDishesByRestaurantId(order.getRestaurantId());
-        //TODO: check if all dishId in orderDto is in dishes
+        for (Dish dish : dishes) {
+            if (orderDto.getOrderItems().stream().noneMatch(orderItemDto -> orderItemDto.getDishId() == dish.getId())) {
+                throw new RuntimeException("Dish with id " + dish.getId() + " is not valid in the order");
+            }
+        }
         Order savedOrder = orderRepository.save(order);
         return OrderMap.mapOrderToOrderDto(savedOrder);
     }
