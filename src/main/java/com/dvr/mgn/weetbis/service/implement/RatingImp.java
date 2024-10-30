@@ -25,7 +25,7 @@ public class RatingImp implements RatingInterface {
         if (!isRestaurantIdExist(ratingDto.getRestaurantId())) {
             throw new ResourceNotFoundException("Restaurant ID " + ratingDto.getRestaurantId() + " not found");
         }
-
+        DecimalFormat df = new DecimalFormat("0.00");
         // Get the restaurant by its ID
         Restaurant restaurant = restaurantRepository.findById(ratingDto.getRestaurantId()).get();
 
@@ -33,10 +33,13 @@ public class RatingImp implements RatingInterface {
         int totalRaters = restaurant.getTotalRaters();
         double totalRating = restaurant.getAverageRating() * totalRaters;
         restaurant.setAverageRating(++totalRaters);
-        double newAvgRating = (totalRating + ratingDto.getRating()) / totalRaters;
+        double ratingInput = ratingDto.getRating();
+        ratingInput = Double.parseDouble(df.format(ratingInput));
+        System.out.println("=========> ratingInput: " + ratingInput);
+        double newAvgRating = (totalRating + ratingInput) / totalRaters;
 
-        DecimalFormat df = new DecimalFormat("0.00");
         newAvgRating = Double.parseDouble(df.format(newAvgRating));
+        System.out.println("=========> Restaurant Rating: " + newAvgRating);
 
         // Update the restaurant rating
         restaurant.setAverageRating(newAvgRating);

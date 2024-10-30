@@ -18,6 +18,7 @@ import lombok.Setter;
 public class Order {
 
     @Id
+    @Column(unique = true, nullable = false)
     private String orderId;
 
     @Column(name = "restaurant_id")
