@@ -3,6 +3,7 @@ package com.dvr.mgn.weetbis.controllers;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.dvr.mgn.weetbis.Validation.Validation;
 import com.dvr.mgn.weetbis.dto.OrderDto;
 import com.dvr.mgn.weetbis.service.interfaces.OrderInterface;
 
@@ -26,6 +27,11 @@ public class OrderController {
     @PostMapping
     public ResponseEntity<?> createRating(@RequestBody OrderDto orderDto)  {
         try {
+            // Check if restaurant-ID exists
+            int restaurantId = orderDto.getRestaurantId();
+            boolean isRestaurantIdExist = orderInterface.isRestaurantIdExist(restaurantId);
+            Validation.isValidRestaurantId(isRestaurantIdExist);
+            // Create order
             OrderDto savedOrder = orderInterface.createOrder(orderDto);
             String orderId = savedOrder.getOrderId();
             // Map response body to return orderId

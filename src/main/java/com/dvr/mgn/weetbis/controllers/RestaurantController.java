@@ -3,6 +3,7 @@ package com.dvr.mgn.weetbis.controllers;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.dvr.mgn.weetbis.Validation.Validation;
 import com.dvr.mgn.weetbis.dto.DishDto;
 import com.dvr.mgn.weetbis.dto.RestaurantBodyDto;
 import com.dvr.mgn.weetbis.dto.RestaurantDto;
@@ -36,9 +37,11 @@ public class RestaurantController {
     @PostMapping
     public ResponseEntity<?> createRestaurant(@RequestBody RestaurantDto restaurantDto) {
         try {
-            System.out.println();
-            System.out.println();
-            System.out.println();
+            Validation.isValidRestaurantDto(restaurantDto);
+            System.out.println("==========> Restaurant Name: " + restaurantDto.getName());
+            System.out.println("==========> Is Kosher Restaurant: " + restaurantDto.getIsKosher());
+            System.out.println("==========> Restaurant Phone: " + restaurantDto.getPhone());
+            System.out.println("==========> Restaurant Tag: " + restaurantDto.getTags());
             RestaurantDto newRestaurant = restaurantInterface.createRestaurant(restaurantDto);
             return ResponseEntity.status(HttpStatus.CREATED).body(newRestaurant);
             // return ResponseEntity.created(null).build();
@@ -89,6 +92,7 @@ public class RestaurantController {
     @PutMapping("{id}")
     public ResponseEntity<?> updateRestaurant(@PathVariable("id") int restaurant_id, @RequestBody RestaurantDto updatedRestaurantDto) {
         try {
+            Validation.isEmptyTagsList(updatedRestaurantDto.getTags());
             updatedRestaurantDto.setId(restaurant_id);
             RestaurantDto updatedRestaurant = restaurantInterface.updateRestaurant(updatedRestaurantDto);
             return ResponseEntity.ok(RestaurantMap.mapToRestaurantBodyDto(updatedRestaurant));

@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.dvr.mgn.weetbis.Validation.Validation;
 import com.dvr.mgn.weetbis.dto.RatingDto;
 import com.dvr.mgn.weetbis.service.interfaces.RatingInterface;
 
@@ -20,6 +21,13 @@ public class RatingController {
     @PostMapping
     public ResponseEntity<?> createRating(@RequestBody RatingDto ratingDto) {
         try {
+            // Check if restaurant-ID exists
+            int restaurantId = ratingDto.getRestaurantId();
+            boolean isRestaurantIdExist = ratingInterface.isRestaurantIdExist(restaurantId);
+            Validation.isValidRestaurantId(isRestaurantIdExist);
+            // Check if rating is valid
+            Validation.isValidRating(ratingDto.getRating());
+            // Create rating
             ratingInterface.rateRestaurant(ratingDto);
             return ResponseEntity.status(201).body(null);
         } catch (RuntimeException e) {

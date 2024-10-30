@@ -8,6 +8,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import com.dvr.mgn.weetbis.Validation.Validation;
 import com.dvr.mgn.weetbis.dto.RestaurantDto;
 import com.dvr.mgn.weetbis.entities.Restaurant;
 import com.dvr.mgn.weetbis.exceptions.ResourceNotFoundException;
@@ -22,6 +23,7 @@ public class RestaurantImp implements RestaurantInterface {
 
     @Override
     public RestaurantDto createRestaurant(RestaurantDto restaurantDto) {
+        Validation.isValidRestaurantDto(restaurantDto);
         Restaurant restaurant = RestaurantMap.mapNewRestaurant(restaurantDto);
         // print log restaurant
         System.out.println(restaurant);
