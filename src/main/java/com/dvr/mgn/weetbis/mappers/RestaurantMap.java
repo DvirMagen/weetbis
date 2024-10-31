@@ -6,11 +6,13 @@ import java.util.stream.Collectors;
 import com.dvr.mgn.weetbis.dto.RestaurantBodyDto;
 import com.dvr.mgn.weetbis.dto.RestaurantDto;
 import com.dvr.mgn.weetbis.dto.RestaurantWithDishesDto;
+import com.dvr.mgn.weetbis.Utils.Utils;
 import com.dvr.mgn.weetbis.Validation.Validation;
 import com.dvr.mgn.weetbis.dto.DishDto;
 import com.dvr.mgn.weetbis.entities.Restaurant;
 
 public class RestaurantMap {
+
     public static RestaurantDto mapRestaurantDto(Restaurant restaurant) {
         RestaurantDto restaurantDto = new RestaurantDto();
         restaurantDto.setId(restaurant.getId());
@@ -19,7 +21,7 @@ public class RestaurantMap {
         restaurantDto.setIsKosher(restaurant.getIsKosher());
         restaurantDto.setTotalRaters(restaurant.getTotalRaters());
         restaurantDto.setAverageRating(restaurant.getAverageRating());
-        restaurantDto.setTags(restaurant.getTags());
+        restaurantDto.setTags(tagsFormat(restaurant.getTags()));
         return restaurantDto;
     }
 
@@ -35,11 +37,10 @@ public class RestaurantMap {
         restaurant.setIsKosher(restaurantDto.getIsKosher());
         restaurant.setTotalRaters(restaurantDto.getTotalRaters());
         restaurant.setAverageRating(restaurantDto.getAverageRating());
-        restaurant.setTags(restaurantDto.getTags());
+        restaurant.setTags(tagsFormat(restaurantDto.getTags()));
         return restaurant;
     }
     
-
     public static Restaurant mapNewRestaurant(RestaurantDto restaurantDto) {
         Restaurant restaurant = new Restaurant();
         restaurant.setId(0);
@@ -48,7 +49,7 @@ public class RestaurantMap {
         restaurant.setIsKosher(restaurantDto.getIsKosher());
         restaurant.setTotalRaters(0);
         restaurant.setAverageRating(0);
-        restaurant.setTags(restaurantDto.getTags());
+        restaurant.setTags(tagsFormat(restaurantDto.getTags()));
         return restaurant;
     }
 
@@ -59,7 +60,7 @@ public class RestaurantMap {
         restaurantBodyDto.setPhone(restaurantDto.getPhone());
         restaurantBodyDto.setIsKosher(restaurantDto.getIsKosher());
         restaurantBodyDto.setAverageRating(restaurantDto.getAverageRating());
-        restaurantBodyDto.setTags(restaurantDto.getTags());
+        restaurantBodyDto.setTags(tagsFormat(restaurantDto.getTags()));
         return restaurantBodyDto;
     }
 
@@ -74,7 +75,7 @@ public class RestaurantMap {
         restaurantWithDishesDto.setPhone(restaurantDto.getPhone());
         restaurantWithDishesDto.setIsKosher(restaurantDto.getIsKosher());
         restaurantWithDishesDto.setAverageRating(restaurantDto.getAverageRating());
-        restaurantWithDishesDto.setTags(restaurantDto.getTags());
+        restaurantWithDishesDto.setTags(tagsFormat(restaurantDto.getTags()));
         restaurantWithDishesDto.setDishes(DishMap.mapDishDtoListToDishBodyDtoList(dishes));
         return restaurantWithDishesDto;
     }
@@ -86,6 +87,14 @@ public class RestaurantMap {
             restaurant.setPhone(updatedRestaurantDto.getPhone());
         }
         if (updatedRestaurantDto.getIsKosher() != null) restaurant.setIsKosher(updatedRestaurantDto.getIsKosher());
-        if (updatedRestaurantDto.getTags() != null) restaurant.setTags(updatedRestaurantDto.getTags());
+        if (updatedRestaurantDto.getTags() != null) {
+            restaurant.setTags(tagsFormat(updatedRestaurantDto.getTags()));
+        }
     }
+
+    public static List<String> tagsFormat(List<String> tags) {
+        if (tags == null) return null;
+        return tags.stream().map(Utils::toTitleMode).collect(Collectors.toList());
+    }
+
 }

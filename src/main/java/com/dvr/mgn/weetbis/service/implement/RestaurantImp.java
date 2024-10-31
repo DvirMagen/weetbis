@@ -8,6 +8,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import com.dvr.mgn.weetbis.Utils.Utils;
 import com.dvr.mgn.weetbis.Validation.Validation;
 import com.dvr.mgn.weetbis.dto.RestaurantDto;
 import com.dvr.mgn.weetbis.entities.Restaurant;
@@ -46,6 +47,7 @@ public class RestaurantImp implements RestaurantInterface {
 
     @Override
     public List<RestaurantDto> getRestaurantsByTag(String tag) {
+        tag = Utils.toTitleMode(tag);
         List<Restaurant> restaurantsList = restaurantRepository.findByTag(tag);
         return RestaurantMap.toRestaurantDtoList(restaurantsList);
 
