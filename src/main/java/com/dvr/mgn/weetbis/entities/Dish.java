@@ -27,7 +27,8 @@ public class Dish {
     @Column(name = "price")
     private double price;
 
-    @Column(name = "restaurant_id")
-    private int restaurantId;
+    @ManyToOne
+    @JoinColumn(name = "restaurant_id", referencedColumnName = "id", insertable = false, updatable = false)
+    private Restaurant restaurant;
     
 }

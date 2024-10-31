@@ -37,6 +37,9 @@ public class Restaurant {
     @Column(name = "average_rating")
     private double averageRating;
 
+    @OneToMany(mappedBy = "restaurant", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    private List<Dish> dishes;
+
     @ElementCollection
     @CollectionTable(name = "restaurant_tags", joinColumns = @JoinColumn(name = "restaurant_id"))
     @Column(name = "tag")

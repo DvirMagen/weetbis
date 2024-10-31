@@ -14,6 +14,7 @@ import com.dvr.mgn.weetbis.dto.RestaurantDto;
 import com.dvr.mgn.weetbis.entities.Restaurant;
 import com.dvr.mgn.weetbis.exceptions.ResourceNotFoundException;
 import com.dvr.mgn.weetbis.mappers.RestaurantMap;
+import com.dvr.mgn.weetbis.repository.OrderRepo;
 import com.dvr.mgn.weetbis.repository.RestaurantRepo;
 
 @Service
@@ -21,6 +22,7 @@ import com.dvr.mgn.weetbis.repository.RestaurantRepo;
 public class RestaurantImp implements RestaurantInterface {
 
     private RestaurantRepo restaurantRepository;
+    private OrderRepo orderRepository;
 
     @Override
     public RestaurantDto createRestaurant(RestaurantDto restaurantDto) {
@@ -70,6 +72,8 @@ public class RestaurantImp implements RestaurantInterface {
         restaurantRepository.findById(id).orElseThrow(
             () -> new ResourceNotFoundException("Restaurant " + id + " not found"));
         restaurantRepository.deleteById(id);
+        orderRepository.deleteByRestaurantId(id);
+
     }
 
 }
